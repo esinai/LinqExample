@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ConnectionsTBL">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="userID" Type="int" />
+          <Property Name="loginDateTime" Type="datetime" />
+          <Property Name="logoutDateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserTBL">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="gender" Type="varchar" MaxLength="50" />
+          <Property Name="ip_address" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK_ConnectionsTBL_ToUsersTBL">
+          <End Role="UserTBL" Type="Self.UserTBL" Multiplicity="0..1" />
+          <End Role="ConnectionsTBL" Type="Self.ConnectionsTBL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTBL">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ConnectionsTBL">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbModelStoreContainer">
+          <EntitySet Name="ConnectionsTBL" EntityType="Self.ConnectionsTBL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTBL" EntityType="Self.UserTBL" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ConnectionsTBL_ToUsersTBL" Association="Self.FK_ConnectionsTBL_ToUsersTBL">
+            <End Role="UserTBL" EntitySet="UserTBL" />
+            <End Role="ConnectionsTBL" EntitySet="ConnectionsTBL" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ConnectionsTBL">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="loginDateTime" Type="DateTime" Precision="3" />
+          <Property Name="logoutDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserTBL" Relationship="Self.FK_ConnectionsTBL_ToUsersTBL" FromRole="ConnectionsTBL" ToRole="UserTBL" />
+        </EntityType>
+        <EntityType Name="UserTBL">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ip_address" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ConnectionsTBL" Relationship="Self.FK_ConnectionsTBL_ToUsersTBL" FromRole="UserTBL" ToRole="ConnectionsTBL" />
+        </EntityType>
+        <Association Name="FK_ConnectionsTBL_ToUsersTBL">
+          <End Role="UserTBL" Type="Self.UserTBL" Multiplicity="0..1" />
+          <End Role="ConnectionsTBL" Type="Self.ConnectionsTBL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTBL">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ConnectionsTBL">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ConnectionsTBL" EntityType="Self.ConnectionsTBL" />
+          <EntitySet Name="UserTBL" EntityType="Self.UserTBL" />
+          <AssociationSet Name="FK_ConnectionsTBL_ToUsersTBL" Association="Self.FK_ConnectionsTBL_ToUsersTBL">
+            <End Role="UserTBL" EntitySet="UserTBL" />
+            <End Role="ConnectionsTBL" EntitySet="ConnectionsTBL" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbModelStoreContainer" CdmEntityContainer="dbEntities">
+          <EntitySetMapping Name="ConnectionsTBL">
+            <EntityTypeMapping TypeName="dbModel.ConnectionsTBL">
+              <MappingFragment StoreEntitySet="ConnectionsTBL">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="loginDateTime" ColumnName="loginDateTime" />
+                <ScalarProperty Name="logoutDateTime" ColumnName="logoutDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTBL">
+            <EntityTypeMapping TypeName="dbModel.UserTBL">
+              <MappingFragment StoreEntitySet="UserTBL">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="ip_address" ColumnName="ip_address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
